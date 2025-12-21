@@ -1,6 +1,6 @@
 # Flask Project Boilerplate
 
-A production-ready starter template for Flask applications. This boilerplate is set up using the **Application Factory Pattern**, **Blueprints**, **SQLAlchemy**, and **Bootstrap 5**.
+A starter template for Flask applications. This boilerplate is set up using the **Application Factory Pattern**, **Blueprints**, **SQLAlchemy**, and **Bootstrap 5**.
 
 ## Features
 - **Scalable Structure:** Uses Blueprints and Application Factory (`create_app`).
