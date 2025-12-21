@@ -1,4 +1,3 @@
-```markdown
 # Flask Project Boilerplate
 
 A production-ready starter template for Flask applications. This boilerplate is set up using the **Application Factory Pattern**, **Blueprints**, **SQLAlchemy**, and **Bootstrap 5**.
@@ -123,4 +122,3 @@ The database (`app.db`) is automatically created in the `instance/` folder the f
 To reset the database during development:
 1. Delete the `instance/app.db` file.
 2. Restart the application (the `create_app` function will recreate empty tables).
-```
