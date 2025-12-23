@@ -1,6 +1,17 @@
-venv/
-*.pyc
+# .gitignore
+
+# Python
 __pycache__/
+*.py[cod]
+venv/
+
+# Secrets
+.env
+
+# Database
 instance/
-.pytest_cache/
+*.sqlite
+*.db
+
+# OS
 .DS_Store

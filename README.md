@@ -67,7 +67,31 @@ pip install -r requirements.txt
 
 ---
 
-### 4. Run the Application
+### 4. Set Up Local Environment Variables (.env)
+
+This project supports environment variables via a local `.env` file.Create a file named `.env` in the root of your project (same level as `run.py`).
+
+Example `.env` file:
+```
+# Flask settings
+FLASK_ENV=development
+FLASK_APP=run.py
+
+# Security
+SECRET_KEY=your-secret-key-here
+
+# Database
+SQLALCHEMY_DATABASE_URI=sqlite:///instance/app.db
+```
+**Notes:**
+
+SECRET_KEY should be replaced with a unique, random string for security.
+
+The `.env` file is automatically loaded by Flask when using python-dotenv.
+
+Do not commit your `.env` file to version control. Add it to `.gitignore`.
+
+### 5. Run the Application
 
 Start the Flask development server.
 
