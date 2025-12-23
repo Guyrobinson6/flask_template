@@ -1,10 +1,13 @@
 from flask import Flask
-from config import Config
+from config import config_map # Import the map, not just the class
 from .extensions import db, bootstrap
 
-def create_app(config_class=Config):
+# Default to 'development' if no argument is provided
+def create_app(config_name='development'):
     app = Flask(__name__)
-    app.config.from_object(config_class)
+    
+    # Load the correct config class based on the name
+    app.config.from_object(config_map[config_name])
 
     # Initialize Flask extensions
     db.init_app(app)
@@ -14,7 +17,7 @@ def create_app(config_class=Config):
     from app.main import bp as main_bp
     app.register_blueprint(main_bp)
 
-    # Create database tables automatically within app context
+    # Create database tables
     with app.app_context():
         db.create_all()
 

@@ -6,7 +6,7 @@ A starter template for Flask applications. This boilerplate is set up using the 
 - **Scalable Structure:** Uses Blueprints and Application Factory (`create_app`).
 - **Database Ready:** Pre-configured with SQLite and SQLAlchemy.
 - **UI Ready:** Bootstrap 5 via `bootstrap-flask`.
-- **Configuration:** Clean separation of config settings.
+- **Configuration:** Clean separation of config settings via `.env`.
 
 ---
 
@@ -23,16 +23,14 @@ cp -r flask_template my_new_project
 cd my_new_project
 ```
 
-**Windows (PowerShell)**
-```powershell
+**Windows (Powershell)**
+```Powershell
 Copy-Item -Path flask_template -Destination my_new_project -Recurse
 cd my_new_project
 ```
-
 ---
 
 ### 2. Set Up Virtual Environment
-
 You must create a fresh virtual environment for every new project.
 
 **Linux / macOS (WSL)**
@@ -44,8 +42,8 @@ python3 -m venv venv
 source venv/bin/activate
 ```
 
-**Windows (Command Prompt / PowerShell)**
-```powershell
+**Windows (Powershell)**
+```Powershell
 # Create the environment
 python -m venv venv
 
@@ -53,65 +51,63 @@ python -m venv venv
 venv\Scripts\activate
 ```
 
-*(You should see `(venv)` appear at the start of your command line).*
-
 ---
 
 ### 3. Install Dependencies
+Install the required packages listed in requirements.txt.
 
-Install the required packages listed in `requirements.txt`.
-
-```bash
+```Bash
 pip install -r requirements.txt
 ```
-
 ---
 
 ### 4. Set Up Local Environment Variables (.env)
+This project supports environment variables via a local `.env` file. Create a file named `.env` in the root of your project (same level as `run.py`).
 
-This project supports environment variables via a local `.env` file.Create a file named `.env` in the root of your project (same level as `run.py`).
+See the example `.env.example` file for more info.
 
-Example `.env` file:
-```
-# Flask settings
-FLASK_ENV=development
-FLASK_APP=run.py
-
-# Security
-SECRET_KEY=your-secret-key-here
-
-# Database
-SQLALCHEMY_DATABASE_URI=sqlite:///instance/app.db
-```
-**Notes:**
-
-SECRET_KEY should be replaced with a unique, random string for security.
-
-The `.env` file is automatically loaded by Flask when using python-dotenv.
-
-Do not commit your `.env` file to version control. Add it to `.gitignore`.
-
-### 5. Run the Application
-
-Start the Flask development server.
-
-**Linux / macOS**
-```bash
-python3 run.py
-```
-
-**Windows**
-```bash
-python run.py
-```
-
-Open your browser and navigate to: **[http://127.0.0.1:5000/](http://127.0.0.1:5000/)**
+**Crucial:** Do not commit your .env file to version control. It is already added to .gitignore.
 
 ---
 
-## 📂 Project Structure
+### 5. Configuration Setup
 
-```text
+This project uses a robust configuration system defined in `config.py`. It supports multiple environments (Development, Production) and loads secrets from your `.env` file.
+
+**Available Environments**
+The `config_map` in `config.py` defines:
+- **`development`**: Debug mode enabled (`DEBUG=True`).
+- **`production`**: Optimized for deployment (`DEBUG=False`).
+
+**How to Switch Environments**
+By default, `run.py` starts the app in **development** mode. To change this, you can modify the `create_app` call in `run.py`:
+
+```python
+# run.py
+app = create_app('production')
+```
+---
+
+### 6. Run the Application
+Start the Flask development server.
+
+**Linux / macOS**
+
+```Bash
+python3 run.py
+```
+**Windows**
+
+```Bash
+python run.py
+```
+Open your browser and navigate to: http://127.0.0.1:5000/
+
+---
+
+### 📂 Project Structure
+
+```Text
 my_new_project/
 │
 ├── app/
@@ -126,23 +122,50 @@ my_new_project/
 │       └── routes.py       # Routes for the main section
 │
 ├── instance/               # SQLite database appears here after running
-├── config.py               # Settings (Secret Keys, DB URI)
+├── .env                    # Environment variables (Secret keys, DB URL)
+├── config.py               # Settings (Loads values from .env)
 ├── run.py                  # Entry point script
 └── requirements.txt        # Python dependencies
 ```
+---
 
-## 🛠 Customization Guide
+### 🛡️ Git & Security (`.gitignore`)
+To keep your repository clean and secure, the `.gitignore` file is pre-configured to exclude sensitive and temporary files:
 
-Once your new project is running, here are the first things you should change:
+```Text
+# Python internals
+__pycache__/
+*.pyc
 
-1.  **`app/templates/base.html`**: Change the `<title>` and Navbar brand name.
-2.  **`config.py`**: Update the `SECRET_KEY` for security.
-3.  **`app/models.py`**: Define your database tables (Classes).
-4.  **`app/main/routes.py`**: Start building your views.
+# Virtual Environment
+venv/
 
-## Database Management
-The database (`app.db`) is automatically created in the `instance/` folder the first time you run the app.
+# Environment Variables (SECRETS)
+.env
+
+# Database & Instance folder
+instance/
+*.sqlite
+*.db
+
+# OS metadata
+.DS_Store
+```
+
+---
+
+### 🛠 Customization Guide
+Once your new project is running, here are the first things you should do:
+
+* Configure Environment (`.env`): Ensure your `.env` file exists and has a unique SECRET_KEY.
+* `app/templates/base.html`: Change the <title> and Navbar brand name to match your new project.
+* `app/models.py`: Define your database tables (SQLAlchemy Classes).
+* `app/main/routes.py`: Start building your views and routes.
+
+### Database Management
+The database file (e.g., `app.db`) is automatically created in the `instance/` folder the first time you run the app (thanks to `db.create_all()` in the app factory).
 
 To reset the database during development:
-1. Delete the `instance/app.db` file.
-2. Restart the application (the `create_app` function will recreate empty tables).
+* Stop the Flask server.
+* Delete the .db or .sqlite file inside the instance/ folder.
+* Restart the application. The app factory will automatically recreate the tables defined in your models.
