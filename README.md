@@ -78,12 +78,11 @@ See the example `.env.example` file for more info.
 ## 5. Creating a Dedicated PostgreSQL User (SQLAlchemy‑Friendly)
 
 ### A. Create the PostgreSQL user and database
-
-Inside the PostgreSQL shell:
 ```
 sudo -i -u postgres
 psql
 ```
+
 Then:
 ```
 CREATE USER flaskuser WITH PASSWORD 'strongpassword';
@@ -117,7 +116,8 @@ Inside config.py:
 
 class Config:
     SQLALCHEMY_DATABASE_URI = os.getenv("DATABASE_URL")
-    SQLALCHEMY_TRACK_MODIFICATIONS = False```
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
+```
 
 Inside __init__.py:
 ```
