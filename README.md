@@ -71,8 +71,9 @@ This project supports environment variables via a local `.env` file. Create a fi
 See the example `.env.example` file for more info.
 
 **Crucial:** Do not commit your .env file to version control. It is already added to .gitignore.
+---
 
-## 🐘 Creating a Dedicated PostgreSQL User (SQLAlchemy‑Friendly)
+### 5. Creating a Dedicated PostgreSQL User (SQLAlchemy‑Friendly)
 
 1. Create the PostgreSQL user and database
 
@@ -92,7 +93,7 @@ Exit:
 \q
 exit
 ```
-## 🧩 2. Use the correct SQLAlchemy connection string
+### 2. Use the correct SQLAlchemy connection string
 
 SQLAlchemy uses the standard PostgreSQL URI format:
 
@@ -106,7 +107,7 @@ If you’re using environment variables (recommended):
 
 ```DATABASE_URL="postgresql://flaskuser:strongpassword@localhost:5432/flaskdb"```
 
-## 🏗️ 3. Configure SQLAlchemy in your Flask project
+###  3. Configure SQLAlchemy in your Flask project
 
 Inside config.py:
 
@@ -135,7 +136,7 @@ def create_app():
 
     return app
 ```
-## 🧱 4. Define your models normally
+##  4. Define your models normally
 
 SQLAlchemy doesn’t care which PostgreSQL user owns the database — it only cares that the user has permission to create tables.
 
@@ -148,7 +149,7 @@ class Product(db.Model):
     name = db.Column(db.String(120), nullable=False)
     price = db.Column(db.Float, nullable=False)
 ```
-## 🔧 5. Run migrations with Flask‑Migrate
+##  5. Run migrations with Flask‑Migrate
 ```
 flask db init      # only once
 flask db migrate -m "Initial migration"
@@ -158,7 +159,7 @@ These commands will create tables inside flaskdb using the permissions of flasku
 
 ---
 
-### 5. Configuration Setup
+### 6. Configuration Setup
 
 This project uses a robust configuration system defined in `config.py`. It supports multiple environments (Development, Production) and loads secrets from your `.env` file.
 
@@ -176,7 +177,7 @@ app = create_app('production')
 ```
 ---
 
-### 6. Run the Application
+### 7. Run the Application
 Start the Flask development server.
 
 **Linux / macOS**
