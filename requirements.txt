@@ -4,3 +4,6 @@ bootstrap-flask
 Flask-WTF
 email-validator
 python-dotenv
+psycopg2-binary
+flask_sqlalchemy
+flask_migrate

@@ -68,6 +68,90 @@ See the example `.env.example` file for more info.
 
 **Crucial:** Do not commit your .env file to version control. It is already added to .gitignore.
 
+## 🐘 Creating a Dedicated PostgreSQL User (SQLAlchemy‑Friendly)
+
+1. Create the PostgreSQL user and database
+
+Inside the PostgreSQL shell:
+```
+sudo -i -u postgres
+psql
+```
+Then:
+```
+CREATE USER flaskuser WITH PASSWORD 'strongpassword';
+CREATE DATABASE flaskdb OWNER flaskuser;
+GRANT ALL PRIVILEGES ON DATABASE flaskdb TO flaskuser;
+```
+Exit:
+```
+\q
+exit
+```
+## 🧩 2. Use the correct SQLAlchemy connection string
+
+SQLAlchemy uses the standard PostgreSQL URI format:
+
+```postgresql://username:password@host:port/databasename```
+
+For your dedicated user:
+
+```postgresql://flaskuser:strongpassword@localhost:5432/flaskdb```
+
+If you’re using environment variables (recommended):
+
+```DATABASE_URL="postgresql://flaskuser:strongpassword@localhost:5432/flaskdb"```
+
+## 🏗️ 3. Configure SQLAlchemy in your Flask project
+
+Inside config.py:
+
+```import os
+
+class Config:
+    SQLALCHEMY_DATABASE_URI = os.getenv("DATABASE_URL")
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
+```
+Inside __init__.py:
+```
+from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
+
+db = SQLAlchemy()
+migrate = Migrate()
+
+def create_app():
+    app = Flask(__name__)
+    app.config.from_object("config.Config")
+
+    db.init_app(app)
+    migrate.init_app(app, db)
+
+    from . import models  # ensure models are imported
+
+    return app
+```
+## 🧱 4. Define your models normally
+
+SQLAlchemy doesn’t care which PostgreSQL user owns the database — it only cares that the user has permission to create tables.
+
+Example:
+```
+from . import db
+
+class Product(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(120), nullable=False)
+    price = db.Column(db.Float, nullable=False)
+```
+## 🔧 5. Run migrations with Flask‑Migrate
+```
+flask db init      # only once
+flask db migrate -m "Initial migration"
+flask db upgrade
+```
+These commands will create tables inside flaskdb using the permissions of flaskuser.
+
 ---
 
 ### 5. Configuration Setup

@@ -11,10 +11,9 @@ class Config:
     # Secret key for sessions, CSRF, etc.
     SECRET_KEY = os.getenv("SECRET_KEY", "dev-secret-key")
 
-    # Default SQLite database (stored in /instance folder)
+    # Database configuration
     SQLALCHEMY_DATABASE_URI = os.getenv(
-        "SQLALCHEMY_DATABASE_URI",
-        "sqlite:///instance/app.db"
+        "SQLALCHEMY_DATABASE_URI"
     )
 
     SQLALCHEMY_TRACK_MODIFICATIONS = False
