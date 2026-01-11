@@ -21,6 +21,10 @@ Open your terminal and duplicate this folder, renaming it to your new project na
 ```bash
 cp -r flask_template my_new_project
 cd my_new_project
+rm -rf .git
+git init
+git add .
+git commit -m "Initial commit"
 ```
 
 **Windows (Powershell)**
